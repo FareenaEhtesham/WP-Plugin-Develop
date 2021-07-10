@@ -48,28 +48,6 @@ if(!function_exists('wpp_plugin_scripts')){
     add_action('wp_enqueue_scripts' ,'wpp_plugin_scripts');
 }
 
-//THis is the function which return a page when Like/Dislike PLugin called
-function wpp_plugin_page_html(){
+//Settings Menu and Page
 
-}
-
-function wpp_sub_plugin_page_html(){
-}
-
-function register_menu_submenu(){
-    // position start with 2
-    add_menu_page( 'WP Like/Dislike System', 'Like/Dislike', 'manage_options',
-    'like-dislike', 'wpp_plugin_page_html', 'dashicons-thumbs-up', 7 );
-
-    add_submenu_page(
-        'like-dislike',
-        'Sub Menu',
-        'Sub Menu',
-        'manage_options',
-        'sub-menu',
-        'wpp_sub_plugin_page_html'
-    );
-}
-
-add_action( 'admin_menu', 'register_menu_submenu');
-
+require plugin_dir_path( __FILE__).'inc/settings.php';
