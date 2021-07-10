@@ -36,6 +36,8 @@ define( 'DB_CHARSET', 'utf8mb4' );
 
 /** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
+//it prevent not to take FTP Credentials when upload plugin
+define('FS_METHOD', 'direct');
 
 /**#@+
  * Authentication Unique Keys and Salts.
@@ -85,6 +87,7 @@ define( 'WP_DEBUG', true );
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
-
+//prevent upload directory error when upload plugin
+define( 'UPLOADS', 'wp-content/uploads' );
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';

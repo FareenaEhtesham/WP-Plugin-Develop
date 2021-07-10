@@ -39,12 +39,37 @@ if(!function_exists('wpp_plugin_scripts')){
     function wpp_plugin_scripts(){
 
         //load css
-        wp_enqueue_style('wpp-css',WPP_PLUGIN_DIR,'assets/css/style.css','CSS','1.0.0',false);
+        wp_enqueue_style('wpp-css',WPP_PLUGIN_DIR. 'assets/css/style.css','CSS','1.0.0',false);
 
         //load js
-        wp_enqueue_script('wpp-js',WPP_PLUGIN_DIR,'assets/js/index.js','jQuery','1.0.0',true);
+        wp_enqueue_script('wpp-js',WPP_PLUGIN_DIR. 'assets/js/index.js','jQuery','1.0.0',true);
     }
 
-    add_action('wp_enqueue_script' ,'wpp_plugin_scripts');
+    add_action('wp_enqueue_scripts' ,'wpp_plugin_scripts');
 }
+
+//THis is the function which return a page when Like/Dislike PLugin called
+function wpp_plugin_page_html(){
+
+}
+
+function wpp_sub_plugin_page_html(){
+}
+
+function register_menu_submenu(){
+    // position start with 2
+    add_menu_page( 'WP Like/Dislike System', 'Like/Dislike', 'manage_options',
+    'like-dislike', 'wpp_plugin_page_html', 'dashicons-thumbs-up', 7 );
+
+    add_submenu_page(
+        'like-dislike',
+        'Sub Menu',
+        'Sub Menu',
+        'manage_options',
+        'sub-menu',
+        'wpp_sub_plugin_page_html'
+    );
+}
+
+add_action( 'admin_menu', 'register_menu_submenu');
 
