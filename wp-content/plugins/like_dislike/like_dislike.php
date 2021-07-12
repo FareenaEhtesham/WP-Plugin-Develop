@@ -50,3 +50,93 @@ register_deactivation_hook( __FILE__, 'wpp_like_table' );
 //BUTTONS
 require plugin_dir_path( __FILE__).'inc/btn.php';
 
+add_action( 'wp_ajax_wpp_like_btn_store' ,'wpp_like_btn_store' );
+add_action( 'wp_ajax_nopriv_wpp_like_btn_store' ,'wpp_like_btn_store' );// nopriv for non authenticated users
+
+add_action( 'wp_ajax_wpp_dislike_btn_store' ,'wpp_dislike_btn_store' );
+add_action( 'wp_ajax_nopriv_wpp_dislikelike_btn' ,'wpp_dislike_btn_store' );// nopriv for non authenticated users
+
+function wpp_like_btn_store(){
+
+    global $wpdb;
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+    $table_name = $wpdb->prefix . "wpp_likesystem";
+    if(isset($_POST['pid']) && isset($_POST['uid'])) {
+
+        $user_id = $_POST['uid'];
+        $post_id = $_POST['pid'];
+
+        $check_like = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name WHERE user_id='$user_id' AND post_id='$post_id' AND like_count=1 " );
+
+        if($check_like > 0) {
+            ?>
+            <script>
+            alert "Sorry, buyt you already liked this post!";
+            </script>
+            <?php
+        }
+        else {
+            $wpdb->insert( 
+                ''.$table_name.'', 
+                array( 
+                    'post_id' => $_POST['pid'], 
+                    'user_id' => $_POST['uid'],
+                    'like_count' => 1
+                ), 
+                array( 
+                    '%d', 
+                    '%d',
+                    '%d'
+                )
+            );
+            if($wpdb->insert_id) {
+                echo "Thank you for loving this post!";
+            }
+        }
+        
+    }
+    wp_die();
+}
+
+function wpp_dislike_btn_store(){
+    global $wpdb;
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+    $table_name = $wpdb->prefix . "wpp_likesystem";
+    if(isset($_POST['pid']) && isset($_POST['uid'])) {
+
+        $user_id = $_POST['uid'];
+        $post_id = $_POST['pid'];
+
+        $check_like = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name WHERE user_id='$user_id' AND post_id='$post_id' AND like_count=1 " );
+
+        if($check_like > 0) {
+            ?>
+            <script>
+            alert "Sorry, buyt you already liked this post!";
+            </script>
+            <?php
+        }
+        else {
+            $wpdb->insert( 
+                ''.$table_name.'', 
+                array( 
+                    'post_id' => $_POST['pid'], 
+                    'user_id' => $_POST['uid'],
+                    'dislike_count' => 1
+                ), 
+                array( 
+                    '%d', 
+                    '%d',
+                    '%d'
+                )
+            );
+            if($wpdb->insert_id) {
+                echo "Thank you for loving this post!";
+            }
+        }
+        
+    }
+    wp_die();
+}
